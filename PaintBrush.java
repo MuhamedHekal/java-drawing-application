@@ -1,0 +1,6 @@
+class PaintBrush{
+
+    Canvas canvas ;
+
+
+}
