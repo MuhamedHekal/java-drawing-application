@@ -10,6 +10,7 @@ class MyPanel extends JPanel{
 	ArrayList<Shape> history;
 	public MyPanel(){
 		r = new Rectangle();
+		r.setcolor(2);
 		history = new ArrayList<>();
 		addMouseListener(new MouseListener() {
 			@Override
@@ -30,7 +31,7 @@ class MyPanel extends JPanel{
 			@Override
 			public void mouseReleased(MouseEvent e){
 				// if the selected is Rectangle
-				Shape temp = new Rectangle(r.getX().get(0), r.getY().get(0), r.getX().get(1), r.getY().get(1));
+				Shape temp = new Rectangle(r.getX().get(0), r.getY().get(0), r.getX().get(1), r.getY().get(1),r.getcolor());
 				history.add(temp);
 			}
 			
