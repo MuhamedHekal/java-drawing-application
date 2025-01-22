@@ -2,21 +2,33 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import javax.swing.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 class MyPanel extends JPanel{
 	Shape r ;
-	ArrayList<Shape> history;
+	String Selected = "Oval";
 	public MyPanel(){
-		r = new Rectangle();
-		r.setcolor(2);
-		history = new ArrayList<>();
+		Shape.limited = true;
+		if("Oval".equals(Selected)){
+			r = new Oval();
+			
+		}else if("Rectangle".equals(Selected)) {
+			r = new Rectangle();
+			
+		}else{
+			r = new Line();
+			
+			
+		}
+		//history = new ArrayList<>();
 		addMouseListener(new MouseListener() {
 			@Override
 			public void mousePressed(MouseEvent e){
 				r.setx1(e.getX());
 				r.sety1(e.getY());
+				r.setcolor();
+				System.out.println("mouse pressed x in ui : " + e.getX() );
+                System.out.println("mouse pressed y in ui : " + e.getY() );
 				
 			}
 			@Override
@@ -31,9 +43,22 @@ class MyPanel extends JPanel{
 			@Override
 			public void mouseReleased(MouseEvent e){
 				// if the selected is Rectangle
-				Shape temp = new Rectangle(r.getX().get(0), r.getY().get(0), r.getX().get(1), r.getY().get(1),r.getcolor());
-				history.add(temp);
+				r.setx2(e.getPoint().x);
+				r.sety2(e.getPoint().y);
+				if("Oval".equals(Selected)){
+					r.history.add(r);	
+					r = new Oval();	
+				}else if ("Rectangle".equals(Selected)){
+					r.history.add(r);	
+					r = new Rectangle();	
+				}else{
+					r.history.add(r);	
+					r = new Line();	
+					
+				}
+				
 			}
+		
 			
 		});
 		addMouseMotionListener(new MouseMotionListener() {
@@ -53,13 +78,15 @@ class MyPanel extends JPanel{
 	}
 	public void paint(Graphics g){
 		super.paint(g);
-		// g.drawString("Hello", 100, 100);
-		// g.drawRect(0, getHeight() - getHeight()/2/3 , getWidth(), getHeight()/3);
-		r.draw(g);
-		
-		for (Shape d : history){
+		for (Shape d : r.history){
 			d.draw(g);
 		}
+		// g.drawString("Hello", 100, 100);
+		// g.drawRect(0, getHeight() - getHeight()/2/3 , getWidth(), getHeight()/3);
+		new Ui(g, getHeight(), getWidth());
+		r.draw(g);
+		
+		
 	}
 
 }
