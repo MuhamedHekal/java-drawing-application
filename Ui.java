@@ -6,8 +6,9 @@ import javax.swing.JPanel;
 public class Ui extends JPanel{
     public static ArrayList<Shape> uiObj= new ArrayList<>();
     public static int currentColor;
-    public static String currentShape;
+    public static String currentShape = "Line";
     public Ui(Graphics g, int frameHeight, int frameWidth){
+        
         // setLayout(null);
         Shape.limited = true;
         // System.out.println("ui limited : "+ Shape.limited);
@@ -55,7 +56,7 @@ public class Ui extends JPanel{
 
             Shape filledlineShape = new Line(470, 400 ,500,450 ,0,true,true);
             filledlineShape.draw(g);
-            uiObj.add(filledOvalShape);
+            uiObj.add(filledlineShape);
             
             
 
@@ -82,5 +83,5 @@ public class Ui extends JPanel{
         
         Shape.limited = false;                             
     }
-   
+    
 }

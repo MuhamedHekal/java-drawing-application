@@ -7,6 +7,7 @@ abstract class Shape {
     protected int y1;
     protected int y2;
     protected int color ;
+    protected String type ;
     protected boolean filled;
     protected boolean dotted;
     public static boolean limited = true;
@@ -86,6 +87,40 @@ abstract class Shape {
     }
     public int getcolor(){
         return color;
+    }
+    public void settype(){
+        int RectangleDomain = Math.abs(Ui.uiObj.get(3).x1 - Ui.uiObj.get(3).x2)/2;    
+        int Reccenterx = (Ui.uiObj.get(3).x1 + Ui.uiObj.get(3).x2)/2;
+        int Reccentery = (Ui.uiObj.get(3).y1+Ui.uiObj.get(3).y2)/2;
+        double RecpressLength = Math.sqrt(Math.pow(Reccenterx - x1, 2) + Math.pow(Reccentery - y1, 2));
+
+        int OvalangleDomain = Math.abs(Ui.uiObj.get(4).x1 - Ui.uiObj.get(4).x2)/2;
+        int Ovalcenterx = (Ui.uiObj.get(4).x1 + Ui.uiObj.get(4).x2)/2;
+        int Ovalcentery = (Ui.uiObj.get(4).y1+Ui.uiObj.get(4).y2)/2;
+        double OvalpressLength = Math.sqrt(Math.pow(Ovalcenterx - x1, 2) + Math.pow(Ovalcentery - y1, 2));
+
+        int LineangleDomain = Math.abs(Ui.uiObj.get(5).x1 - Ui.uiObj.get(5).x2)/2;
+        int Linecenterx = (Ui.uiObj.get(5).x1 + Ui.uiObj.get(5).x2)/2;
+        int Linecentery = (Ui.uiObj.get(5).y1+Ui.uiObj.get(5).y2)/2;
+        double LinepressLength = Math.sqrt(Math.pow(Linecenterx - x1, 2) + Math.pow(Linecentery - y1, 2));
+        if (RecpressLength <= RectangleDomain ){
+           Ui.currentShape ="Rectangle";
+           
+           
+        }
+        else if (OvalpressLength <= OvalangleDomain ){
+            Ui.currentShape ="Oval";
+            
+        }
+        else if (LinepressLength <= LineangleDomain ){
+            Ui.currentShape ="Line";
+            
+        }
+        else
+            type = Ui.currentShape;
+        
+
+        
     }
     public void setfilled(boolean fill){
         this.filled = fill;

@@ -6,16 +6,16 @@ import javax.swing.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 class MyPanel extends JPanel{
 	Shape r ;
-	String Selected = "Oval";
+	// String Selected = "Oval";
 	public MyPanel(){
 		Shape.limited = true;
-		if("Oval".equals(Selected)){
+		if("Oval".equals(Ui.currentShape)){
 			r = new Oval();
 			
-		}else if("Rectangle".equals(Selected)) {
+		}else if("Rectangle".equals(Ui.currentShape)) {
 			r = new Rectangle();
 			
-		}else{
+		}else if ("Line".equals(Ui.currentShape)){
 			r = new Line();
 			
 			
@@ -27,8 +27,8 @@ class MyPanel extends JPanel{
 				r.setx1(e.getX());
 				r.sety1(e.getY());
 				r.setcolor();
-				System.out.println("mouse pressed x in ui : " + e.getX() );
-                System.out.println("mouse pressed y in ui : " + e.getY() );
+				r.settype();
+				
 				
 			}
 			@Override
@@ -45,13 +45,13 @@ class MyPanel extends JPanel{
 				// if the selected is Rectangle
 				r.setx2(e.getPoint().x);
 				r.sety2(e.getPoint().y);
-				if("Oval".equals(Selected)){
+				if("Oval".equals(Ui.currentShape)){
 					r.history.add(r);	
 					r = new Oval();	
-				}else if ("Rectangle".equals(Selected)){
+				}else if ("Rectangle".equals(Ui.currentShape)){
 					r.history.add(r);	
 					r = new Rectangle();	
-				}else{
+				}else if ("Line".equals(Ui.currentShape)){
 					r.history.add(r);	
 					r = new Line();	
 					
@@ -78,12 +78,22 @@ class MyPanel extends JPanel{
 	}
 	public void paint(Graphics g){
 		super.paint(g);
+		switch (Ui.currentColor) {
+            case 0 -> g.drawString("Black ", 15, 15);
+            case 1 -> g.drawString("Red ", 15, 15);
+            case 2 -> g.drawString("Blue ", 15, 15);
+            case 3 -> g.drawString("Green ", 15, 15);
+        default -> throw new AssertionError();
+        }
+        g.drawString(Ui.currentShape, 15, 30);
+		new Ui(g, getHeight(), getWidth());
+		
 		for (Shape d : r.history){
 			d.draw(g);
 		}
 		// g.drawString("Hello", 100, 100);
 		// g.drawRect(0, getHeight() - getHeight()/2/3 , getWidth(), getHeight()/3);
-		new Ui(g, getHeight(), getWidth());
+		
 		r.draw(g);
 		
 		
