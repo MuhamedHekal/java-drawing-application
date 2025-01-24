@@ -1,7 +1,6 @@
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 class MyPanel extends JPanel{
@@ -16,16 +15,21 @@ class MyPanel extends JPanel{
 			r = new Rectangle();
 			
 		}else if ("Line".equals(Ui.currentShape)){
-			r = new Line();
+			r = new Line();}
+
+		else if ("FreeHand".equals(Ui.currentShape)){
+			r = new FreeHand();}
 			
-			
-		}
 		//history = new ArrayList<>();
-		addMouseListener(new MouseListener() {
+
+
+
+		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e){
-				r.setx1(e.getX());
-				r.sety1(e.getY());
+			
+				r.setx1(e.getPoint().x);
+				r.sety1(e.getPoint().y);
 				r.setcolor();
 				r.settype();
 				
@@ -54,20 +58,36 @@ class MyPanel extends JPanel{
 				}else if ("Line".equals(Ui.currentShape)){
 					r.history.add(r);	
 					r = new Line();	
-					
 				}
 				
 			}
+				
+			
 		
 			
 		});
-		addMouseMotionListener(new MouseMotionListener() {
+		addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
                 // Set the last point to the current mouse position
-				r.setx2(e.getPoint().x);
-				r.sety2(e.getPoint().y);
-				repaint();
+				if ("FreeHand".equals(Ui.currentShape)){
+					r.setx2(e.getX());
+					r.sety2(e.getY());
+					repaint();
+					r.freehand.add(r);
+					r = new FreeHand();	
+					r.setcolor();
+					r.setx1(e.getX());
+					r.sety1(e.getY());
+					
+				}else{
+					r.setx2(e.getX());
+					r.sety2(e.getY());
+					repaint();
+				}
+
+				
+				
             }
 
             @Override
@@ -88,13 +108,21 @@ class MyPanel extends JPanel{
         g.drawString(Ui.currentShape, 15, 30);
 		new Ui(g, getHeight(), getWidth());
 		
+		if(!"FreeHand".equals(Ui.currentShape)){
+			r.draw(g);
+		}
 		for (Shape d : r.history){
 			d.draw(g);
+			
+		}
+		// r.draw(g);
+		for (Shape s : r.freehand){
+			s.draw(g);
 		}
 		// g.drawString("Hello", 100, 100);
 		// g.drawRect(0, getHeight() - getHeight()/2/3 , getWidth(), getHeight()/3);
 		
-		r.draw(g);
+		
 		
 		
 	}

@@ -7,7 +7,7 @@ abstract class Shape {
     protected int y1;
     protected int y2;
     protected int color ;
-    protected String type ;
+    // protected String type ;
     protected boolean filled;
     protected boolean dotted;
     public static boolean limited = true;
@@ -16,6 +16,7 @@ abstract class Shape {
     public static final int GREEN = 3;
     public static final int BLACK = 0;
     static ArrayList<Shape> history = new ArrayList<>();
+    static ArrayList<Shape> freehand = new ArrayList<>();
 
     public Shape(){
         
@@ -66,6 +67,9 @@ abstract class Shape {
         int greencenterx = (Ui.uiObj.get(2).x1 + Ui.uiObj.get(2).x2)/2;
         int greencentery = (Ui.uiObj.get(2).y1+Ui.uiObj.get(2).y2)/2;
         double greenpressLength = Math.sqrt(Math.pow(greencenterx - x1, 2) + Math.pow(greencentery - y1, 2));
+
+
+
         if (redpressLength <= 25 ){
            color = RED;
            Ui.currentColor = color;
@@ -103,6 +107,18 @@ abstract class Shape {
         int Linecenterx = (Ui.uiObj.get(5).x1 + Ui.uiObj.get(5).x2)/2;
         int Linecentery = (Ui.uiObj.get(5).y1+Ui.uiObj.get(5).y2)/2;
         double LinepressLength = Math.sqrt(Math.pow(Linecenterx - x1, 2) + Math.pow(Linecentery - y1, 2));
+
+        int FHangleDomain = Math.abs(Ui.uiObj.get(6).x1 - Ui.uiObj.get(6).x2)/2;
+        int FHcenterx = (Ui.uiObj.get(6).x1 + Ui.uiObj.get(6).x2)/2;
+        int FHcentery = (Ui.uiObj.get(6).y1+Ui.uiObj.get(6).y2)/2;
+        double FHpressLength = Math.sqrt(Math.pow(FHcenterx - x1, 2) + Math.pow(FHcentery - y1, 2));
+
+        int EangleDomain = Math.abs(Ui.uiObj.get(7).x1 - Ui.uiObj.get(7).x2)/2;
+        int Ecenterx = (Ui.uiObj.get(7).x1 + Ui.uiObj.get(7).x2)/2;
+        int Ecentery = (Ui.uiObj.get(7).y1+Ui.uiObj.get(7).y2)/2;
+        double EpressLength = Math.sqrt(Math.pow(Ecenterx - x1, 2) + Math.pow(Ecentery - y1, 2));
+
+
         if (RecpressLength <= RectangleDomain ){
            Ui.currentShape ="Rectangle";
            
@@ -115,10 +131,15 @@ abstract class Shape {
         else if (LinepressLength <= LineangleDomain ){
             Ui.currentShape ="Line";
             
+        }else if (FHpressLength <= FHangleDomain){
+            Ui.currentShape = "FreeHand";
+            
+
+        }else if (EpressLength <= EangleDomain){
+            Ui.currentShape = "Eraser";
+            
         }
-        else
-            type = Ui.currentShape;
-        
+    
 
         
     }

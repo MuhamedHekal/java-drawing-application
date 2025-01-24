@@ -65,17 +65,20 @@ public class Ui extends JPanel{
         g.drawString("Free hand", 540, 375);
         Shape freehand = new Rectangle(530, 360 ,600,380 ,0,false,true);
         freehand.draw(g);
+        uiObj.add(freehand);
         // draw eraser button
         g.setFont(f2);
         g.drawString("Eraser", 550, 415);
         Shape Eraser = new Rectangle(530, 400 ,600,420 ,0,false,true);
         Eraser.draw(g);
+        uiObj.add(Eraser);
 
         // draw eraser button
         g.setFont(f2);
         g.drawString("Clear", 550, 455);
         Shape Clear = new Rectangle(530, 440 ,600,460 ,0,false,true);
         Clear.draw(g);
+        uiObj.add(Clear);
 
 
         
