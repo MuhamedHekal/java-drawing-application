@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Rectangle extends Shape {
-   
+    
     public Rectangle(){
         
     }
@@ -30,6 +30,7 @@ public class Rectangle extends Shape {
             case 1 -> g.setColor(Color.red);
             case 2 -> g.setColor(Color.blue);
             case 3 -> g.setColor(Color.green);
+            case -1 -> g.setColor(Color.white);
         default -> throw new AssertionError();
         }
         if(filled)

@@ -2,11 +2,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import javax.swing.JPanel;
-public class Ui extends JPanel{
+public class Ui extends MyPanel{
     public static ArrayList<Shape> uiObj= new ArrayList<>();
     public static int currentColor;
     public static String currentShape = "Line";
+    public static boolean currentfilled;
     public Ui(Graphics g, int frameHeight, int frameWidth){
         
         // setLayout(null);
@@ -73,15 +73,24 @@ public class Ui extends JPanel{
         Eraser.draw(g);
         uiObj.add(Eraser);
 
-        // draw eraser button
+        // draw Clear button
         g.setFont(f2);
         g.drawString("Clear", 550, 455);
         Shape Clear = new Rectangle(530, 440 ,600,460 ,0,false,true);
         Clear.draw(g);
         uiObj.add(Clear);
-
-
-        
+        // draw Fillshape rectangle
+        g.setFont(f2);
+        g.drawString("Fill Shape", 675, 375);
+        Shape fillShape= new Rectangle(650, 360 ,670,380 ,0,currentfilled,true);
+        fillShape.draw(g);
+        uiObj.add(fillShape);
+        // draw Dotted shape rectangle
+        g.setFont(f2);
+        g.drawString("Dotted Shape", 675, 415);
+        Shape dottedShape = new Rectangle(650, 400 ,670,420 ,0,false,true);
+        dottedShape.draw(g);
+        uiObj.add(dottedShape);
         
         
         Shape.limited = false;                             

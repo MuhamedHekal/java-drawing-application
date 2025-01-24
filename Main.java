@@ -7,6 +7,7 @@ class MyPanel extends JPanel{
 	Shape r ;
 	// String Selected = "Oval";
 	public MyPanel(){
+		setBackground(Color.WHITE);
 		Shape.limited = true;
 		if("Oval".equals(Ui.currentShape)){
 			r = new Oval();
@@ -19,7 +20,9 @@ class MyPanel extends JPanel{
 
 		else if ("FreeHand".equals(Ui.currentShape)){
 			r = new FreeHand();}
-			
+		else if ("Eraser".equals(Ui.currentShape)){
+			r = new Eraser();}
+		
 		//history = new ArrayList<>();
 
 
@@ -32,7 +35,16 @@ class MyPanel extends JPanel{
 				r.sety1(e.getPoint().y);
 				r.setcolor();
 				r.settype();
+				r.setfilled();
+				if ("Clear".equals(r.type)){
+					Graphics g = getGraphics();
+					g.setColor(Color.white);
+                    g.fillRect(0, 0, 800, 350);
+					r.history.add(new Rectangle(0,0,800,350,-1,true,true));
 				
+				}
+				
+
 				
 			}
 			@Override
@@ -58,6 +70,12 @@ class MyPanel extends JPanel{
 				}else if ("Line".equals(Ui.currentShape)){
 					r.history.add(r);	
 					r = new Line();	
+				}else if ("Freehand".equals(Ui.currentShape)){
+					r.history.add(r);
+					r = new FreeHand();
+				}else if ("Eraser".equals(Ui.currentShape)){
+					r.history.add(r);
+					r = new Eraser();
 				}
 				
 			}
@@ -70,12 +88,18 @@ class MyPanel extends JPanel{
             @Override
             public void mouseDragged(MouseEvent e) {
                 // Set the last point to the current mouse position
-				if ("FreeHand".equals(Ui.currentShape)){
+				if (("FreeHand".equals(Ui.currentShape)) || ("Eraser".equals(Ui.currentShape)))  {
 					r.setx2(e.getX());
 					r.sety2(e.getY());
 					repaint();
-					r.freehand.add(r);
-					r = new FreeHand();	
+					
+					if ("FreeHand".equals(Ui.currentShape)){
+						r.history.add(r);
+						r = new FreeHand();
+					}else{
+						r.history.add(r);
+						r = new Eraser();
+					}
 					r.setcolor();
 					r.setx1(e.getX());
 					r.sety1(e.getY());
@@ -92,33 +116,40 @@ class MyPanel extends JPanel{
 
             @Override
             public void mouseMoved(MouseEvent e) {
-               
+                
             }
         });
 	}
 	public void paint(Graphics g){
 		super.paint(g);
+		new Ui(g, getHeight(), getWidth());
 		switch (Ui.currentColor) {
             case 0 -> g.drawString("Black ", 15, 15);
             case 1 -> g.drawString("Red ", 15, 15);
             case 2 -> g.drawString("Blue ", 15, 15);
             case 3 -> g.drawString("Green ", 15, 15);
+			case -1 -> g.drawString("White ", 15, 15);
         default -> throw new AssertionError();
         }
         g.drawString(Ui.currentShape, 15, 30);
-		new Ui(g, getHeight(), getWidth());
-		
-		if(!"FreeHand".equals(Ui.currentShape)){
-			r.draw(g);
-		}
-		for (Shape d : r.history){
-			d.draw(g);
+		for (Shape s : r.history){
+			s.draw(g);
 			
 		}
-		// r.draw(g);
-		for (Shape s : r.freehand){
-			s.draw(g);
+		if((!"FreeHand".equals(Ui.currentShape)) && (!"Eraser".equals(Ui.currentShape))){
+			r.draw(g);
 		}
+		
+		// r.draw(g);
+		// for (Shape s : r.freehand){
+			// s.draw(g);
+		// }
+
+		
+		/*for (Shape s : r.eraser){
+			s.draw(g);
+			
+		}*/
 		// g.drawString("Hello", 100, 100);
 		// g.drawRect(0, getHeight() - getHeight()/2/3 , getWidth(), getHeight()/3);
 		
@@ -134,6 +165,7 @@ public class Main{
 		
 		JFrame frame = new JFrame();
 		frame.setContentPane(new MyPanel());
+		frame.setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(800, 500);
         frame.setVisible(true);

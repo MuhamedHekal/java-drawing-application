@@ -7,16 +7,18 @@ abstract class Shape {
     protected int y1;
     protected int y2;
     protected int color ;
-    // protected String type ;
-    protected boolean filled;
+    protected String type ;
+    protected boolean filled=false;
     protected boolean dotted;
     public static boolean limited = true;
     public static final int RED = 1;
     public static final int BLUE = 2;
     public static final int GREEN = 3;
     public static final int BLACK = 0;
+    public static final int WHITE = -1;
     static ArrayList<Shape> history = new ArrayList<>();
-    static ArrayList<Shape> freehand = new ArrayList<>();
+    // static ArrayList<Shape> freehand = new ArrayList<>();
+    // static ArrayList<Shape> eraser = new ArrayList<>();
 
     public Shape(){
         
@@ -68,9 +70,11 @@ abstract class Shape {
         int greencentery = (Ui.uiObj.get(2).y1+Ui.uiObj.get(2).y2)/2;
         double greenpressLength = Math.sqrt(Math.pow(greencenterx - x1, 2) + Math.pow(greencentery - y1, 2));
 
-
-
-        if (redpressLength <= 25 ){
+        if (color == -1 ){
+            color = WHITE;
+            Ui.currentColor = color;
+            
+         }else if (redpressLength <= 25 ){
            color = RED;
            Ui.currentColor = color;
            
@@ -83,9 +87,11 @@ abstract class Shape {
             color = GREEN;
             Ui.currentColor = color;
         }
-        else
+         
+        else{
             color = Ui.currentColor;
-        
+            
+        }
 
         
     }
@@ -118,6 +124,11 @@ abstract class Shape {
         int Ecentery = (Ui.uiObj.get(7).y1+Ui.uiObj.get(7).y2)/2;
         double EpressLength = Math.sqrt(Math.pow(Ecenterx - x1, 2) + Math.pow(Ecentery - y1, 2));
 
+        int ClearangleDomain = Math.abs(Ui.uiObj.get(8).x1 - Ui.uiObj.get(8).x2)/2;
+        int Clearcenterx = (Ui.uiObj.get(8).x1 + Ui.uiObj.get(8).x2)/2;
+        int Clearcentery = (Ui.uiObj.get(8).y1+Ui.uiObj.get(8).y2)/2;
+        double ClearpressLength = Math.sqrt(Math.pow(Clearcenterx - x1, 2) + Math.pow(Clearcentery - y1, 2));
+
 
         if (RecpressLength <= RectangleDomain ){
            Ui.currentShape ="Rectangle";
@@ -131,6 +142,7 @@ abstract class Shape {
         else if (LinepressLength <= LineangleDomain ){
             Ui.currentShape ="Line";
             
+
         }else if (FHpressLength <= FHangleDomain){
             Ui.currentShape = "FreeHand";
             
@@ -138,13 +150,22 @@ abstract class Shape {
         }else if (EpressLength <= EangleDomain){
             Ui.currentShape = "Eraser";
             
+        }else if (ClearpressLength <= ClearangleDomain){
+            type = "Clear";
         }
-    
-
         
     }
-    public void setfilled(boolean fill){
-        this.filled = fill;
+    public void setfilled(){
+
+        int filledangleDomain = Math.abs(Ui.uiObj.get(9).x1 - Ui.uiObj.get(9).x2)/2;    
+        int fillcenterx = (Ui.uiObj.get(9).x1 + Ui.uiObj.get(9).x2)/2;
+        int fillcentery = (Ui.uiObj.get(9).y1+Ui.uiObj.get(9).y2)/2;
+        double fillpressLength = Math.sqrt(Math.pow(fillcenterx - x1, 2) + Math.pow(fillcentery - y1, 2));
+
+        if (fillpressLength <= filledangleDomain ){
+            filled = !filled;
+            Ui.currentfilled = filled;
+        }
     }
     public boolean getfilled(){
         return this.filled;
@@ -168,8 +189,8 @@ abstract class Shape {
             return point;
     }
     public int yLimit(int point){
-        if(point > 350)
-            return 350;
+        if(point >= 350)
+            return 348;
         else if (point < 0)
             return 0;
         else 

@@ -22,6 +22,7 @@ public class Line extends Shape {
             case 1 -> g.setColor(Color.red);
             case 2 -> g.setColor(Color.blue);
             case 3 -> g.setColor(Color.green);
+            case -1 -> g.setColor(Color.white);
         default -> throw new AssertionError();
         }
         
