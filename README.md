@@ -1,5 +1,5 @@
 # Drawing Application
-
+![demo](Photo/1.png)
 This is a simple drawing application built using Java and the AWT (Abstract Window Toolkit) library. The application allows users to draw various shapes such as lines, rectangles, ovals, and freehand drawings. It also includes an eraser tool to erase parts of the drawing. The user interface provides options to select different colors, shapes, and to toggle the fill property of shapes.
 
 ## Features
@@ -58,4 +58,3 @@ Contributions are welcome! If you have any suggestions or improvements, feel fre
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 Enjoy drawing! 🎨
-![demo](Photo/1.png)
