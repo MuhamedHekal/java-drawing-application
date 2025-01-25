@@ -24,18 +24,25 @@ class MyPanel extends JPanel{
 			r = new Eraser();}
 		
 		//history = new ArrayList<>();
-
-
-
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e){
-			
-				r.setx1(e.getPoint().x);
-				r.sety1(e.getPoint().y);
-				r.setcolor();
-				r.settype();
-				r.setfilled();
+				if (isWithinFillShapeButton(e.getPoint())) {
+					Ui.currentfilled = !Ui.currentfilled; // Toggle the filled state
+					Graphics g = getGraphics();
+					if (Ui.currentfilled){
+						g.setColor(Color.BLACK);
+						g.fillRect(650, 360 ,20,20);
+					}
+					else{
+						g.setColor(Color.WHITE);
+                    	g.fillRect(650, 360 ,20,20);
+					}
+					
+				}
+				
+				
+				
 				if ("Clear".equals(r.type)){
 					Graphics g = getGraphics();
 					g.setColor(Color.white);
@@ -43,9 +50,12 @@ class MyPanel extends JPanel{
 					r.history.add(new Rectangle(0,0,800,350,-1,true,true));
 				
 				}
-				
 
-				
+				r.setx1(e.getPoint().x);
+				r.sety1(e.getPoint().y);
+				r.setcolor();
+				r.settype();
+			
 			}
 			@Override
 			public void mouseClicked(MouseEvent e){
@@ -59,30 +69,22 @@ class MyPanel extends JPanel{
 			@Override
 			public void mouseReleased(MouseEvent e){
 				// if the selected is Rectangle
+				r.setfilled();
 				r.setx2(e.getPoint().x);
 				r.sety2(e.getPoint().y);
-				if("Oval".equals(Ui.currentShape)){
-					r.history.add(r);	
-					r = new Oval();	
-				}else if ("Rectangle".equals(Ui.currentShape)){
-					r.history.add(r);	
-					r = new Rectangle();	
-				}else if ("Line".equals(Ui.currentShape)){
-					r.history.add(r);	
-					r = new Line();	
-				}else if ("Freehand".equals(Ui.currentShape)){
-					r.history.add(r);
-					r = new FreeHand();
-				}else if ("Eraser".equals(Ui.currentShape)){
-					r.history.add(r);
-					r = new Eraser();
-				}
+				r.history.add(r);	
+				if(null != Ui.currentShape)switch (Ui.currentShape) {
+                                case "Oval" -> r = new Oval();
+                                case "Rectangle" -> r = new Rectangle();
+                                case "Line" -> r = new Line();
+                                case "Freehand" -> r = new FreeHand();
+                                case "Eraser" -> r = new Eraser();
+                                default -> {
+                                    }
+                            }
 				
 			}
 				
-			
-		
-			
 		});
 		addMouseMotionListener(new MouseAdapter() {
             @Override
@@ -91,6 +93,7 @@ class MyPanel extends JPanel{
 				if (("FreeHand".equals(Ui.currentShape)) || ("Eraser".equals(Ui.currentShape)))  {
 					r.setx2(e.getX());
 					r.sety2(e.getY());
+					
 					repaint();
 					
 					if ("FreeHand".equals(Ui.currentShape)){
@@ -105,6 +108,7 @@ class MyPanel extends JPanel{
 					r.sety1(e.getY());
 					
 				}else{
+					r.setfilled();
 					r.setx2(e.getX());
 					r.sety2(e.getY());
 					repaint();
@@ -119,6 +123,11 @@ class MyPanel extends JPanel{
                 
             }
         });
+	}
+	private boolean isWithinFillShapeButton(Point point) {
+		// Define the bounds of the "Fill Shape" button
+		int x1 = 650, y1 = 360, x2 = 670, y2 = 380;
+		return point.x >= x1 && point.x <= x2 && point.y >= y1 && point.y <= y2;
 	}
 	public void paint(Graphics g){
 		super.paint(g);
@@ -139,19 +148,6 @@ class MyPanel extends JPanel{
 		if((!"FreeHand".equals(Ui.currentShape)) && (!"Eraser".equals(Ui.currentShape))){
 			r.draw(g);
 		}
-		
-		// r.draw(g);
-		// for (Shape s : r.freehand){
-			// s.draw(g);
-		// }
-
-		
-		/*for (Shape s : r.eraser){
-			s.draw(g);
-			
-		}*/
-		// g.drawString("Hello", 100, 100);
-		// g.drawRect(0, getHeight() - getHeight()/2/3 , getWidth(), getHeight()/3);
 		
 		
 		

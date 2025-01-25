@@ -8,7 +8,7 @@ abstract class Shape {
     protected int y2;
     protected int color ;
     protected String type ;
-    protected boolean filled=false;
+    protected boolean filled;
     protected boolean dotted;
     public static boolean limited = true;
     public static final int RED = 1;
@@ -17,8 +17,7 @@ abstract class Shape {
     public static final int BLACK = 0;
     public static final int WHITE = -1;
     static ArrayList<Shape> history = new ArrayList<>();
-    // static ArrayList<Shape> freehand = new ArrayList<>();
-    // static ArrayList<Shape> eraser = new ArrayList<>();
+    
 
     public Shape(){
         
@@ -156,16 +155,7 @@ abstract class Shape {
         
     }
     public void setfilled(){
-
-        int filledangleDomain = Math.abs(Ui.uiObj.get(9).x1 - Ui.uiObj.get(9).x2)/2;    
-        int fillcenterx = (Ui.uiObj.get(9).x1 + Ui.uiObj.get(9).x2)/2;
-        int fillcentery = (Ui.uiObj.get(9).y1+Ui.uiObj.get(9).y2)/2;
-        double fillpressLength = Math.sqrt(Math.pow(fillcenterx - x1, 2) + Math.pow(fillcentery - y1, 2));
-
-        if (fillpressLength <= filledangleDomain ){
-            filled = !filled;
-            Ui.currentfilled = filled;
-        }
+        this.filled = Ui.currentfilled;
     }
     public boolean getfilled(){
         return this.filled;

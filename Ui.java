@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 public class Ui extends MyPanel{
     public static ArrayList<Shape> uiObj= new ArrayList<>();
-    public static int currentColor;
+    public static int currentColor = 1;
     public static String currentShape = "Line";
     public static boolean currentfilled;
     public Ui(Graphics g, int frameHeight, int frameWidth){
